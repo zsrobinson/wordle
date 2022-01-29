@@ -1,0 +1,55 @@
+* {
+    font-family: monospace;
+    font-size: 40px;
+    font-weight: bold;
+    transition-duration: 250ms;
+    color: lightgray
+}
+
+html {
+    background: rgb(32, 32, 32);
+}
+
+.board {
+}
+
+.word {
+    display: flex;
+}
+
+.tile {
+    display: flex;
+    margin-right: .25rem;
+    margin-bottom: .25rem;
+    width: 1.5rem;
+}
+
+.tile, input, button {
+    height: 1.5rem;
+    padding: 0rem;
+    background-color: transparent;
+    border-radius: .25rem;
+    border: .08rem solid gray;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    width: calc(5rem + 20px);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+input:focus, button:focus {
+    outline: 0;
+    border: .08rem solid rgb(202, 202, 202);
+}
+
+input:focus, button:active {
+    background-color: rgb(48, 48, 48);
+}
+
+.error {
+    font-size: 0.5rem;
+    color: rgb(255, 129, 129)
+}
