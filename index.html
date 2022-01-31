@@ -4,59 +4,19 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Document</title>
-		<script src="script.js"></script>
+		<title>Wordle</title>
+		<script src="jquery-3.6.0.min.js"></script>
+		<script src="script.js" defer></script>
 		<link href="style.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
-		<div class="board">
-			<div class="word">
-				<div class="tile">H</div>
-				<div class="tile">U</div>
-				<div class="tile">M</div>
-				<div class="tile">A</div>
-				<div class="tile">N</div>
-			</div>
-			<div class="word">
-				<div class="tile">H</div>
-				<div class="tile">U</div>
-				<div class="tile">M</div>
-				<div class="tile">A</div>
-				<div class="tile">N</div>
-			</div>
-			<div class="word">
-				<div class="tile">H</div>
-				<div class="tile">U</div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-			</div>
-			<div class="word">
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-			</div>
-			<div class="word">
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-			</div>
-			<div class="word">
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-				<div class="tile"></div>
-			</div>
-		</div>
+		<div class="board"></div>
 
-		<input type="text" id="">
-		<button type="button" >Enter</button>
-		<p class="error">Error: Word must be five letters.</p>
+		<div class="word">
+			<input type="text" id="wordInput">
+			<button type="button" id="enterButton">Enter</button>
+		</div>
+		<p id="message"></p>
 
 	</body>
 </html>

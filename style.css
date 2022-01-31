@@ -34,10 +34,20 @@ html {
     align-items: center;
 }
 
+input, button {
+    margin-right: .25rem;
+    display: flex-inline;
+}
+
 input {
-    width: calc(5rem + 20px);
+    width: calc(1.5rem + 0.08rem + 0.25rem + .08rem + 1.5rem + 0.08rem + 0.25rem + .08rem + 1.5rem);
     text-align: center;
     text-transform: uppercase;
+}
+
+button {
+    width: calc(1.5rem + 0.08rem + 0.25rem + .08rem + 1.5rem + 0.08rem + 0.08rem);
+    height: calc(1.5rem + 0.08rem + 0.08rem)
 }
 
 input:focus, button:focus {
@@ -49,7 +59,6 @@ input:focus, button:active {
     background-color: rgb(48, 48, 48);
 }
 
-.error {
+#message {
     font-size: 0.5rem;
-    color: rgb(255, 129, 129)
 }
