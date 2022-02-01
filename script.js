@@ -99,7 +99,7 @@ function displayMessage(text="", error=false) {
 
 async function getDictionary() {
 	try {
-		const response = await fetch("/words/" + wordLength + "-letter-words.json");
+		const response = await fetch("words/" + wordLength + "-letter-words.json");
 		dictionary = await response.json();
 	} catch {
 		displayMessage("Error: could not fetch dictionary.", true)
