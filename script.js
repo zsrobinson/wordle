@@ -1,7 +1,8 @@
 const wordLength = 5;
 const guesses = 6;
-const winWord = "APPLE";
-const boardData = [];
+let winWord = "";
+let boardData = [];
+let dictionary = [];
 
 function createBoard() {
 
@@ -103,13 +104,41 @@ function displayMessage(text="", error=false) {
 	}
 }
 
-createBoard();
+async function getDictionary() {
+	try {
+		const response = await fetch("/words/5-letter-words.json");
+		dictionary = await response.json();
+	} catch {
+		displayMessage("Error: could not fetch dictionary.", true)
+	}
+}
+
+async function pickWord() {
+	if (dictionary.length == 0) {
+		await getDictionary();
+		await pickWord();
+	} else {
+		winWord = dictionary[Math.floor(Math.random()*dictionary.length)].toUpperCase();
+	}
+}
+
+function validWord(word) {
+	return dictionary.includes(word.toLowerCase())
+}
 
 $("#enterButton").click( function() {
+	
 	const input = $("#wordInput").val();
 	$("#wordInput").val("");
-	addWord(input);
-	updateBoard();
+
+	if (input.length != 5) {
+		displayMessage("Word must be 5 letters long.", true)
+	} else if (dictionary.includes(input.toLowerCase())) {
+		addWord(input);
+		updateBoard();
+	} else {
+		displayMessage("Word not found in dictionary.", true);
+	}
 
 	if (input.toUpperCase() == winWord) {
 		if (boardData.length == 1) {
@@ -119,7 +148,10 @@ $("#enterButton").click( function() {
 		}
 		$('#enterButton').prop('disabled', true)
 	} else if (boardData.length >= 6) {
-		displayMessage("You lost. Try again!")
+		displayMessage(`You lost. The wordle was ${winWord.toLowerCase()}.`)
 		$('#enterButton').prop('disabled', true)
 	}
 });
+
+createBoard();
+pickWord();
