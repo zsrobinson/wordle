@@ -33,50 +33,41 @@ function addWord(enteredWord) {
 
 	enteredWord = enteredWord.toUpperCase();
 
-	// checks if word is the correct length
-	if (enteredWord.length == 5) {
+	// creates a new array to store the data
+	let wordData = [];
+	let win = true;
 
-		displayMessage();
+	// loops through each letter in the word
+	for (let i = 0; i < wordLength; i++) {
 
-		// creates a new array to store the data
-		let wordData = [];
-		let win = true;
+		// adds letter to the list, assumes it is a "gray" word
+		wordData.push([enteredWord[i], 0])
 
-		// loops through each letter in the word
-		for (let i = 0; i < wordLength; i++) {
+		// loops through each letter in the winWord
+		for (let j = 0; j < wordLength; j++) {
 
-			// adds letter to the list, assumes it is a "gray" word
-			wordData.push([enteredWord[i], 0])
-
-			// loops through each letter in the winWord
-			for (let j = 0; j < wordLength; j++) {
-
-				// checks for a "yellow" word
-				if (enteredWord[i] == winWord[j]) {
-					wordData[i][1] = 1;
-				}
-			}
-
-			// checks for a "green" word
-			if (enteredWord[i] == winWord[i]) {
-				wordData[i][1] = 2;
-			} else {
-				win = false;
+			// checks for a "yellow" word
+			if (enteredWord[i] == winWord[j]) {
+				wordData[i][1] = 1;
 			}
 		}
-		boardData.push(wordData);
 
-		if (win) {
-			console.log("you won!")
-		} else if (win == false && boardData.length == guesses) {
-			console.log("you lost :(")
+		// checks for a "green" word
+		if (enteredWord[i] == winWord[i]) {
+			wordData[i][1] = 2;
 		} else {
-			console.log("try again...")
-
+			win = false;
 		}
+	}
+	boardData.push(wordData);
 
+	if (win) {
+		console.log("you won!")
+	} else if (win == false && boardData.length == guesses) {
+		console.log("you lost :(")
 	} else {
-		displayMessage("Word must be 5 letters.", true)
+		console.log("try again...")
+
 	}
 }
 
@@ -85,10 +76,12 @@ function updateBoard() {
 		for (let j = 0; j < wordLength; j++) {
 			$("#"+i+"-"+j).text(boardData[i][j][0])
 
-			if (boardData[i][j][1] == 1) {
+			if (boardData[i][j][1] == 0) {
+				$("#"+i+"-"+j).css("background-color", "rgb(48, 48, 48);")
+			} else if (boardData[i][j][1] == 1) {
 				$("#"+i+"-"+j).css("background-color", "#5a5e12")
 			} else if (boardData[i][j][1] == 2) {
-				$("#"+i+"-"+j).css("background-color", "#0a3f09")
+				$("#"+i+"-"+j).css("background-color", "#0b4f0a")
 			}
 		}
 	}
@@ -106,7 +99,7 @@ function displayMessage(text="", error=false) {
 
 async function getDictionary() {
 	try {
-		const response = await fetch("/words/5-letter-words.json");
+		const response = await fetch("/words/" + wordLength + "-letter-words.json");
 		dictionary = await response.json();
 	} catch {
 		displayMessage("Error: could not fetch dictionary.", true)
@@ -131,9 +124,10 @@ $("#enterButton").click( function() {
 	const input = $("#wordInput").val();
 	$("#wordInput").val("");
 
-	if (input.length != 5) {
-		displayMessage("Word must be 5 letters long.", true)
+	if (input.length != wordLength) {
+		displayMessage("Word must be " + wordLength + " letters long.", true)
 	} else if (dictionary.includes(input.toLowerCase())) {
+		displayMessage();
 		addWord(input);
 		updateBoard();
 	} else {
