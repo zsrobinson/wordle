@@ -1,4 +1,4 @@
-# wordle
+# Wordle
 
 Visit Project: https://wordle.zsrobinson.com ([Alternate Link](https://zsrobinson.github.io/wordle))
 
