@@ -1,5 +1,8 @@
-# wordle
-An imitation of the popular word game "Wordle". Currently a work in progress.
+# Wordle
+
+Visit Project: https://wordle.zsrobinson.com ([Alternate Link](https://zsrobinson.github.io/wordle))
+
+An imitation of the popular word game "Wordle".
 
 ### Dependancies
 
