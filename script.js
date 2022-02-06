@@ -4,6 +4,24 @@ let winWord = "";
 let boardData = [];
 let dictionary = [];
 
+let dictionaries = {
+	win: [],
+	guess: []
+};
+
+async function fetchDictionaries() {
+	try {
+		for (dictionary in dictionaries) {
+			const response = await fetch ("words/" + dictionary + "Dictionary.json");
+			dictionaries[dictionary] = await response.json();
+		}
+		winWord = dictionaries.win[Math.floor(Math.random()*dictionaries.win.length)].toUpperCase();
+	} catch {
+		displayMessage("ERROR: Could not fetch Dictionaries. Refresh the page to try again.", true)
+	}
+}
+fetchDictionaries();
+
 function createBoard() {
 
 	// repeat for each allowed guess
@@ -28,6 +46,7 @@ function createBoard() {
 
 	}
 }
+createBoard();
 
 function addWord(enteredWord) {
 
@@ -35,7 +54,6 @@ function addWord(enteredWord) {
 
 	// creates a new array to store the data
 	let wordData = [];
-	let win = true;
 
 	// loops through each letter in the word
 	for (let i = 0; i < wordLength; i++) {
@@ -55,20 +73,9 @@ function addWord(enteredWord) {
 		// checks for a "green" word
 		if (enteredWord[i] == winWord[i]) {
 			wordData[i][1] = 2;
-		} else {
-			win = false;
 		}
 	}
 	boardData.push(wordData);
-
-	if (win) {
-		console.log("you won!")
-	} else if (win == false && boardData.length == guesses) {
-		console.log("you lost :(")
-	} else {
-		console.log("try again...")
-
-	}
 }
 
 function updateBoard() {
@@ -89,34 +96,13 @@ function updateBoard() {
 
 function displayMessage(text="", error=false) {
 	$("#message").text(text);
+	console.log(text)
 
 	if (error) {
 		$("#message").css("color", "rgb(255, 129, 129)")
 	} else {
 		$("#message").css("color", "lightgray")
 	}
-}
-
-async function getDictionary() {
-	try {
-		const response = await fetch("words/" + wordLength + "-letter-words.json");
-		dictionary = await response.json();
-	} catch {
-		displayMessage("Error: could not fetch dictionary.", true)
-	}
-}
-
-async function pickWord() {
-	if (dictionary.length == 0) {
-		await getDictionary();
-		await pickWord();
-	} else {
-		winWord = dictionary[Math.floor(Math.random()*dictionary.length)].toUpperCase();
-	}
-}
-
-function validWord(word) {
-	return dictionary.includes(word.toLowerCase())
 }
 
 $("#enterButton").click( function() {
@@ -126,7 +112,7 @@ $("#enterButton").click( function() {
 
 	if (input.length != wordLength) {
 		displayMessage("Word must be " + wordLength + " letters long.", true)
-	} else if (dictionary.includes(input.toLowerCase())) {
+	} else if (dictionaries.guess.includes(input.toLowerCase())) {
 		displayMessage();
 		addWord(input);
 		updateBoard();
@@ -136,16 +122,14 @@ $("#enterButton").click( function() {
 
 	if (input.toUpperCase() == winWord) {
 		if (boardData.length == 1) {
-			displayMessage(`You won! You guessed the wordle in 1 try!`)
+			displayMessage(`You won! You guessed the wordle in 1 try! Refresh to play again.`)
 		} else {
-			displayMessage(`You won! You guessed the wordle in ${boardData.length} tries!`)
+			displayMessage(`You won! You guessed the wordle in ${boardData.length} tries! Refresh to play again.`)
 		}
 		$('#enterButton').prop('disabled', true)
 	} else if (boardData.length >= 6) {
-		displayMessage(`You lost. The wordle was ${winWord.toLowerCase()}.`)
+		displayMessage(`You lost. The wordle was ${winWord.toLowerCase()}. Refresh to play again.`)
 		$('#enterButton').prop('disabled', true)
 	}
 });
 
-createBoard();
-pickWord();
