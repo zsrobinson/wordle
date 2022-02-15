@@ -17,7 +17,10 @@ async function fetchDictionaries() {
 			);
 			dictionaries[dictionary] = await response.json();
 		}
-		winWord = dictionaries.win[Math.floor(Math.random()*dictionaries.win.length)].toUpperCase();
+		winWord =
+			dictionaries.win[
+				Math.floor(Math.random() * dictionaries.win.length)
+			].toUpperCase();
 	} catch {
 		displayMessage(
 			"ERROR: Could not fetch Dictionaries. Refresh the page to try again.",
@@ -158,4 +161,6 @@ $("#enterButton").click(function () {
 	}
 });
 
-console.log("Having trouble? Type \"winWord\" into the console to see the answer.")
+console.log(
+	'Having trouble? Type "winWord" into the console to see the answer.'
+);
