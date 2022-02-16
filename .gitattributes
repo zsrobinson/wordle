@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+jquery-3.6.0.min.js linguist-detectable=false
