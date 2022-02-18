@@ -120,7 +120,6 @@ function updateBoard() {
 function displayMessage(text = "", error = false) {
 	$("#message").text(text);
 	console.log(text);
-
 	if (error) {
 		$("#message").css("color", "rgb(255, 129, 129)");
 	} else {
@@ -128,10 +127,11 @@ function displayMessage(text = "", error = false) {
 	}
 }
 
-$("#enterButton").click(function () {
+function enter() {
 	const input = $("#wordInput").val();
 	$("#wordInput").val("");
 
+	// input validation
 	if (input.length != wordLength) {
 		displayMessage("Word must be " + wordLength + " letters long.", true);
 	} else if (dictionaries.guess.includes(input.toLowerCase())) {
@@ -142,6 +142,7 @@ $("#enterButton").click(function () {
 		displayMessage("Word not found in dictionary.", true);
 	}
 
+	// win/lose state
 	if (input.toUpperCase() == winWord) {
 		if (boardData.length == 1) {
 			displayMessage(
@@ -153,14 +154,27 @@ $("#enterButton").click(function () {
 			);
 		}
 		$("#enterButton").prop("disabled", true);
+		$("#wordInput").prop("disabled", true);
 	} else if (boardData.length >= 6) {
 		displayMessage(
-			`You lost. The wordle was ${winWord.toLowerCase()}. Refresh to play again.`
+			`You lost. The wordle was ${winWord}. Refresh to play again.`
 		);
 		$("#enterButton").prop("disabled", true);
+		$("#wordInput").prop("disabled", true);
+	} else {
+		$("#wordInput").focus()
+	}
+}
+
+$("#enterButton").click(enter);
+
+$("#wordInput").on("keypress", function (e) {
+	if (e.which === 13 && $("#enterButton").prop("disabled") == false) {
+		enter()
 	}
 });
 
+$("#wordInput").focus()
 console.log(
 	'Having trouble? Type "winWord" into the console to see the answer.'
 );
